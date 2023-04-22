@@ -1,0 +1,93 @@
+.form  {
+    margin: 2rem auto;
+   padding: 0.5cm;
+    width: 30%;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.control {
+    margin-bottom: 0.5rem;
+}
+
+.control input{
+    border-radius: 4px;
+    text-align: left;
+    width: 70%;
+    margin-top: 0.5cm;
+    margin-bottom: 0.2cm;
+    border: 1 px solid white;
+}
+
+.control label{
+    font-weight: bold;
+}
+
+.options {
+    font-weight: bolder;
+}
+
+.actions button {
+    cursor: pointer;
+    font: inherit;
+    color: white;
+    background-color: #0681fd;
+    border: 1px solid #0681fd;
+    border-radius: 4px;
+    padding: 0.5rem 2.5rem;
+    margin: 1rem;
+  }
+  
+  .options {
+    font-weight: bold;
+    font-size: large;
+    margin-bottom: 1cm;
+    width: 5cm;
+  }
+
+
+
+  .expense {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+  }
+
+  
+  .expense h3 {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+  
+  .expense_delete{
+    background-color: red;
+    font-weight: bold;
+    border-radius: 5px;
+    height:max-content;
+    font-size: large;
+    cursor: pointer;
+    margin: 1cm;
+  }
+
+  .expense_edit{
+    background-color:darkseagreen;
+    font-weight: bold;
+    border-radius: 5px;
+    height:max-content;
+    font-size: large;
+    cursor: pointer;
+  }
+  
+  .description {
+    font-style: italic;
+    color:cadetblue;
+    font-weight: bold;
+  }
+  
+  .price {
+    margin-top: 0.25rem;
+    font-weight: bold;
+    color: #06628a;
+    font-size: 1.25rem;
+  }

@@ -1,0 +1,30 @@
+.form {
+    margin: 3rem auto;
+    text-align: center;
+
+}
+
+.h2 {
+    font-family: serif;
+    text-align: left;
+    margin-bottom: 1cm;
+}
+
+.form label{
+    margin-right: 3px;
+    font-weight: bold;
+}
+
+.form input {
+  margin-right: 2cm;
+  width: 30%;
+  margin-bottom: 1cm;
+  border: 2px solid green;
+}
+
+.form button {
+    background-color: burlywood;
+    font-size: large;
+    margin-right: 29cm;
+    cursor: pointer;
+}
