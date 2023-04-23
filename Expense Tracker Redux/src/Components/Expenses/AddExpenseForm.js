@@ -3,11 +3,17 @@ import classes from './AddExpenseForm.module.css' ;
 import { useCallback,useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { expenseActions } from '../../Store/ExpenseSlice';
+import { themeActions } from '../../Store/ThemeSlice';
+import { CSVLink } from 'react-csv';
 
 export default function AddExpenseForm(){
     
 
-    const expenses=useSelector(state=>state.savedExpenses.expenses)
+    const expenses=useSelector(state=>state.savedExpenses.expenses);
+
+    const isDarkTheme=useSelector(state=>state.theme.isDarkTheme);
+   
+    const isPremiumActive=useSelector(state=>state.theme.isPremiumActive);
 
     const dispatch=useDispatch();
 
@@ -34,7 +40,6 @@ export default function AddExpenseForm(){
 
         dispatch(expenseActions.addExpense(obj));
 
-        //   console.log(res);
 
     }
 
@@ -107,6 +112,32 @@ async  function editExpenseHandler(id,category,description,price){
             totalAmount+= Number(exp.price);
         })
 
+        function activatePremiumHandler(){
+            dispatch(themeActions.setDark())
+        }
+
+        function switchThemeHandler(){
+            dispatch(themeActions.switchTheme())
+        }
+
+
+        const headers=[
+            {
+                label:'Category', key:'category'
+            },
+            {
+                label:'Description',key:'description'
+            },
+            {
+                label:'Price',key:'price'
+            }
+        ]
+
+        const csvLink={
+            filename:"Expenses.csv",
+            headers:headers,
+            data:expenses
+        }
 
     return(
         <div>
@@ -130,10 +161,13 @@ async  function editExpenseHandler(id,category,description,price){
         </select>
         <div className={classes.actions}>
         <button>Add Expense</button>
-        {totalAmount>10000 && <button>Activate Premium</button>}
         </div>
         </form>
         </div>
+            <div>Total Amount: {totalAmount}</div>
+        {totalAmount>=10000 &&<button className={classes.button} onClick={activatePremiumHandler}>Activate Premium</button>}
+       { totalAmount>=10000 &&isPremiumActive && <button className={classes.button} onClick={switchThemeHandler}>{isDarkTheme? 'Switch To Light Theme':'Switch To Dark Theme'} </button>}
+       { totalAmount>=10000 &&isPremiumActive && <button className={classes.button}><CSVLink {...csvLink}>Download File</CSVLink></button>}
         <h1>Added Expenses</h1>
         {expense}
         </div>

@@ -91,3 +91,16 @@
     color: #06628a;
     font-size: 1.25rem;
   }
+
+  .button {
+    cursor: pointer;
+    font: inherit;
+    color: black;
+    font-weight: bolder;
+    background-color: #19e506;
+    border: 2px solid #000305;
+    border-radius: 4px;
+    padding: 0.5rem 2.5rem;
+    margin: 1rem;
+  }
+

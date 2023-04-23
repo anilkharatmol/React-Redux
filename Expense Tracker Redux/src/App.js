@@ -11,8 +11,10 @@ function App() {
 
   const isLoggedIn=useSelector((state)=>state.authentication.isLoggedIn)
 
+  const isDarkTheme=useSelector(state=>state.theme.isDarkTheme);
+
   return (
-    <div className='App'>
+    <div className={isDarkTheme  ? "dark" : "App"}>
       <Switch>
         <Route path='/' exact>
         <SignUp/>
