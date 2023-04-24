@@ -1,0 +1,30 @@
+.header {
+    width: 100%;
+    height: 5rem;
+    padding: 0 10%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #068ff0;
+  }
+
+  .error {
+    width: 100%;
+    height: 5rem;
+    padding: 0 10%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #f40606;
+  }
+
+  .success {
+    width: 100%;
+    height: 5rem;
+    padding: 0 10%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #03fc10;
+  }
+  
+  .h2 {
+    color: white;
+  }

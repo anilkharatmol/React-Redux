@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import classes from './CartButton.module.css';
-import { cartActions } from '../Store/CartSlice';
+import { uiActions } from '../Store/UiSlice';
 
 const CartButton = () => {
 
@@ -8,7 +8,7 @@ const CartButton = () => {
   const totalQuantity=useSelector(state=>state.cart.totalQuantity)
   
 function showCartHandler(){
-  dispatch(cartActions.showCart())
+  dispatch(uiActions.showCart())
 }
 
   return (
