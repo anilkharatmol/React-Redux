@@ -5,6 +5,7 @@ import Products from './components/Shop/Products';
 import { Fragment, useEffect } from 'react';
 import './App.css';
 import { uiActions } from './components/Store/UiSlice';
+import { cartActions } from './components/Store/CartSlice';
 
 let isInitial=true;
 
@@ -20,6 +21,8 @@ function App() {
 
   const dispatch=useDispatch();
 
+
+  
 
   useEffect(()=>{
     if(isInitial){
@@ -39,9 +42,20 @@ function App() {
       else{
         dispatch(uiActions.isError())
       }
-    }).then( 
-       dispatch(uiActions.sendData())).catch(err=>{console.log(err)})
+    }).then(()=>{ 
+     dispatch(uiActions.sendData())})
+       .catch(err=>{console.log(err)})
   },[cart,dispatch])
+
+
+  useEffect(()=>{
+    fetch('https://expense-tracker-8d365-default-rtdb.firebaseio.com/cart.json').then(response=>{
+        return response.json();
+    }).then( (data)=>{console.log(data);
+      dispatch(cartActions.replaceCart(data))})
+  },[dispatch])
+
+  
   
   return (
     <Fragment>
