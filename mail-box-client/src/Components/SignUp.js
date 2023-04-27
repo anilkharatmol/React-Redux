@@ -54,7 +54,7 @@ export default function SignUp(){
                 <Form.Control type="password"  placeholder="Confirm Password" required ref={confirmPasswordRef}/>
                 </Form.Group>
     
-                <Button style={{marginLeft:'3.6cm',marginBottom:'5px'}} variant='primary' type='submit'>Sign up</Button>
+                <Button style={{width:'100%',marginBottom:'5px'}} variant='primary' type='submit'>Sign up</Button>
             </Form>
             <h6 style={{textAlign:'center'}}>Already have an account?<NavLink to='/login'>Login</NavLink></h6>
         </Card>
