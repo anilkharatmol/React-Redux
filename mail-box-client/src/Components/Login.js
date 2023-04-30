@@ -1,12 +1,15 @@
 import { useRef } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { Form,Button,Card } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../Store/AuthSlice';
 
 
 export default function Login(){
     
     const history=useHistory();
 
+    const dispatch=useDispatch();
 
     const emailRef=useRef('');
     const passwordRef=useRef('');
@@ -41,7 +44,7 @@ export default function Login(){
                     })
                
               }
-            }).then((data)=>{localStorage.setItem('token',data.idToken)
+            }).then((data)=>{ dispatch(authActions.login( data.idToken))
                console.log(`User has successfully loggen in`)
             history.replace('/homepage')
          ;}).catch(err=>{alert(err.message)})

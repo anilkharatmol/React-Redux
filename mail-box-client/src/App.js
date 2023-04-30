@@ -1,9 +1,13 @@
 import SignUp from "./Components/SignUp";
-import { Switch,Route } from "react-router-dom";
+import { Switch,Route, Redirect } from "react-router-dom";
 import Login from "./Components/Login";
 import HomePage from "./Pages/HomePage";
+import { useSelector } from "react-redux";
 
 function App() {
+
+  const isLoggedIn=useSelector(state=>state.auth.isLoggedIn);
+  
   return (
     <div >
          <Switch>
@@ -14,7 +18,8 @@ function App() {
         <Login/>
       </Route>
       <Route path='/homepage'>
-        <HomePage/>
+       {isLoggedIn && <HomePage/>}
+       {!isLoggedIn && <Redirect to='/'/>}
       </Route>
       </Switch>
     </div>
