@@ -6,6 +6,7 @@ import { authActions } from "../Store/AuthSlice";
 import { useDispatch } from "react-redux";
 import { EditorState } from "draft-js";
 import { convertToRaw } from "draft-js";
+import { NavLink } from "react-router-dom";
 
 
 export default function HomePage(){
@@ -31,6 +32,8 @@ export default function HomePage(){
 
         const receiverEmail=emailRef.current.value;
         const enteredSubject=subjectRef.current.value;
+
+        dispatch(authActions.setReceiverEmail(receiverEmail));
 
         const mailBody =  convertToRaw(editorState.getCurrentContent()).blocks[0].text;
 
@@ -64,6 +67,7 @@ export default function HomePage(){
     return(
         <div>
         <Button variant="danger" style={{float:'right',fontWeight:'bolder'}} onClick={()=>{dispatch(authActions.logout())}}>Logout</Button>
+      <Button  style={{float:'right',fontWeight:'bolder'}} variant="info">  <NavLink to='/inbox'>INBOX</NavLink></Button>
         <h2 style={{fontFamily:'cursive',textAlign:'left'}}> Welcome to your mail box!!!</h2>
         <hr></hr> 
         <Form onSubmit={submitHandler}> 
