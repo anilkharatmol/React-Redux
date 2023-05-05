@@ -31,6 +31,14 @@ async function getMails(email) {
   }
 }
 
+async function deleteMail(receiver,id){
+  await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${receiver.replace(/[.@]/g,"")}/receivedmails/${id}.json`,{
+    method:'DELETE'
+  })
+
+
+}
+
 
 
 const Inbox = () => {
@@ -38,11 +46,21 @@ const Inbox = () => {
   const receiver = useSelector((state) => state.auth.receiverEmailId);
   const [recievedMailsList, setRecievedMailsList] = useState({});
 
+
+
   useEffect(() => {
     getMails(receiver).then((data) => {
       setRecievedMailsList(data);
     });
   }, [receiver]);
+
+  const deleteEmailHandler = (id)=>{
+    deleteMail(receiver ,id);
+   delete recievedMailsList[id] ;
+   setRecievedMailsList({...recievedMailsList})
+
+ }
+
   
   
   const Emails = [];
@@ -60,9 +78,11 @@ const Inbox = () => {
         {!read && <Image style={{width:'20px',height:'20px'}} src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Location_dot_blue.svg/96px-Location_dot_blue.svg.png"/>} 
           <h1>{subject}</h1>
       </ListGroup.Item>
+      <Button variant="danger" style={{float:"right",width:'20%'}} onClick={()=>{deleteEmailHandler(id)}}>Delete</Button>
       </ListGroup>
     );
   }
+ 
 
 
   return (

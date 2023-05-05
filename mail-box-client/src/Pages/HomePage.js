@@ -63,12 +63,14 @@ export default function HomePage(){
         sendMail(sender,receiver,sentData,receivedData).then(()=>{
             setEditorState(EditorState.createEmpty())})
     }
+    const user=localStorage.getItem('email');
 
     return(
         <div>
+           
         <Button variant="danger" style={{float:'right',fontWeight:'bolder'}} onClick={()=>{dispatch(authActions.logout())}}>Logout</Button>
       <Button  style={{float:'right',fontWeight:'bolder'}} variant="info">  <NavLink to='/inbox'>INBOX</NavLink></Button>
-        <h2 style={{fontFamily:'cursive',textAlign:'left'}}> Welcome to your mail box!!!</h2>
+        <h2 style={{fontFamily:'cursive',textAlign:'left'}}> Welcome to your mail box!!!</h2> {user}
         <hr></hr> 
         <Form onSubmit={submitHandler}> 
             <Form.Control type="email" placeholder="To"  ref={emailRef}/><hr></hr>
