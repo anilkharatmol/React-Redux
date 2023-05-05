@@ -2,12 +2,11 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Editor } from "react-draft-wysiwyg";
-import { authActions } from "../Store/AuthSlice";
 import { useDispatch } from "react-redux";
 import { EditorState } from "draft-js";
 import { convertToRaw } from "draft-js";
 import { NavLink } from "react-router-dom";
-
+import { authActions } from "../Store/AuthSlice";
 
 export default function HomePage(){
     const emailRef=useRef();
@@ -53,7 +52,8 @@ export default function HomePage(){
         const receivedData={
             sender:userEmail,
             subject:enteredSubject,
-            body:mailBody
+            body:mailBody,
+            read:false
         }
 
 

@@ -5,6 +5,7 @@ import HomePage from "./Pages/HomePage";
 import { useSelector } from "react-redux";
 import Inbox from "./Pages/Inbox";
 import ForgotPassword from "./Components/ForgotPassword";
+import ViewMessage from "./Pages/ViewMessage";
 
 function App() {
 
@@ -29,6 +30,9 @@ function App() {
       </Route>
       <Route path='/forgotpassword'>
       <ForgotPassword/>
+      </Route>
+      <Route path="/:id">
+        <ViewMessage/>
       </Route>
       </Switch>
     </div>

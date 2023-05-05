@@ -1,12 +1,15 @@
-import { Button, Card, Container, ListGroup } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { Button, Card, Container, Image, ListGroup } from "react-bootstrap";
+import {  useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 async function getMails(email) {
+
   let emailID = email;
   emailID = emailID.replace(/[.@]/g, "");
+  console.log(emailID);
 
   try {
     const userEmail = localStorage.getItem("email");
@@ -28,39 +31,46 @@ async function getMails(email) {
   }
 }
 
+
+
 const Inbox = () => {
+  const history=useHistory();
   const receiver = useSelector((state) => state.auth.receiverEmailId);
   const [recievedMailsList, setRecievedMailsList] = useState({});
 
+  useEffect(() => {
+    getMails(receiver).then((data) => {
+      setRecievedMailsList(data);
+    });
+  }, [receiver]);
+  
   
   const Emails = [];
   for (let key in recievedMailsList) {
     const id = key;
     const subject = recievedMailsList[key].subject;
     const receivedFrom = recievedMailsList[key].sender;
-    const body=recievedMailsList[key].body;
+    const read=recievedMailsList[key].read;
+
+
     Emails.push(
-      <ListGroup key={id}>
+      <ListGroup key={id} id={id}>
         Received From:{receivedFrom}
-        <ListGroup.Item><h1>{subject}</h1>
-        <p>{body}</p></ListGroup.Item>{" "}
+        <ListGroup.Item style={{cursor:'pointer'}} onClick={()=>{history.replace(`/${id}`)}}>
+        {!read && <Image style={{width:'20px',height:'20px'}} src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Location_dot_blue.svg/96px-Location_dot_blue.svg.png"/>} 
+          <h1>{subject}</h1>
+      </ListGroup.Item>
       </ListGroup>
     );
   }
-  useEffect(() => {
-    getMails(receiver).then((data) => {
-      setRecievedMailsList(data);
-    });
-  }, [receiver]);
 
-  console.log(recievedMailsList);
 
   return (
     <>
     <Button   variant="info"><NavLink to='/homepage'>Compose</NavLink></Button>
       <Container>
         <Card style={{ padding: "40px", margin: "40px" }}>
-          <Card.Title> My Inbox</Card.Title>
+            <Card.Title> My Inbox</Card.Title>
           <Card.Body>{Emails}</Card.Body>
         </Card>
       </Container>
