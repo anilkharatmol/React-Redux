@@ -6,10 +6,14 @@ import { useSelector } from "react-redux";
 import Inbox from "./Pages/Inbox";
 import ForgotPassword from "./Components/ForgotPassword";
 import ViewMessage from "./Pages/ViewMessage";
+import Sent from "./Pages/Sent";
+import SentMessages from "./Pages/SentMessages";
 
 function App() {
 
   const isLoggedIn=useSelector(state=>state.auth.isLoggedIn);
+  const showInbox=useSelector(state=>state.auth.showInbox);
+  const showSent=useSelector(state=>state.auth.showSent);
   
   return (
     <div >
@@ -28,11 +32,16 @@ function App() {
         {isLoggedIn &&<Inbox/>}
         {!isLoggedIn && <Redirect to='/login'/>}
       </Route>
+      <Route path='/sent'>
+      {isLoggedIn &&<Sent/>}
+        {!isLoggedIn && <Redirect to='/login'/>}
+      </Route>
       <Route path='/forgotpassword'>
       <ForgotPassword/>
       </Route>
       <Route path="/:id">
-        <ViewMessage/>
+        {showInbox && <ViewMessage/>}
+        {showSent &&<SentMessages/>}
       </Route>
       </Switch>
     </div>

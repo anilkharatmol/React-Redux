@@ -46,7 +46,8 @@ export default function HomePage(){
         const sentData={
             receiver:receiverEmail,
             subject:enteredSubject,
-            body:mailBody
+            body:mailBody,
+            read:false
         }
 
         const receivedData={
@@ -69,7 +70,8 @@ export default function HomePage(){
         <div>
            
         <Button variant="danger" style={{float:'right',fontWeight:'bolder'}} onClick={()=>{dispatch(authActions.logout())}}>Logout</Button>
-      <Button  style={{float:'right',fontWeight:'bolder'}} variant="info">  <NavLink to='/inbox'>INBOX</NavLink></Button>
+      <Button  style={{float:'right',fontWeight:'bolder',marginRight:'1cm'}} variant="info">  <NavLink to='/sent'>SENT</NavLink></Button>
+      <Button  style={{float:'right',fontWeight:'bolder',marginRight:'1cm'}} variant="info">  <NavLink to='/inbox'>INBOX</NavLink></Button>
         <h2 style={{fontFamily:'cursive',textAlign:'left'}}> Welcome to your mail box!!!</h2> {user}
         <hr></hr> 
         <Form onSubmit={submitHandler}> 

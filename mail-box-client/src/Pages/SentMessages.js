@@ -1,12 +1,11 @@
 import { Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useState , useEffect } from 'react';
 async function getMessage(email , id){
-    let receiver = email ;
-    receiver = receiver.replace(/[.@]/g, "")
+    let sender = email ;
+    sender = sender.replace(/[.@]/g, "")
 
-     const unreadRes =  await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${receiver}/receivedmails/${id}.json`,{
+     const unreadRes =  await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${sender}/sentmails/${id}.json`,{
           method:'PATCH',
           headers:{
               'Content-Type':'application/json'
@@ -15,7 +14,7 @@ async function getMessage(email , id){
         })
       const unreadData = await unreadRes.json()
       console.log(unreadData)  
-      const response =  await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${receiver}/receivedmails/${id}.json`)
+      const response =  await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${sender}/sentmails/${id}.json`)
       const data = await response.json();
       console.log(data);
       return data ;
@@ -23,23 +22,22 @@ async function getMessage(email , id){
   }
 
 
-function ViewMessage() {
+function SentMessages() {
 
   const [message , setMessage] = useState({})
-  const email = useSelector(state=> state.auth.receiverEmailId)
+  const userEmail = localStorage.getItem("email");
   const param = useParams()
   const id = param.id ;
   useEffect(()=>{
-    getMessage(email , id).then(data=>{
+    getMessage(userEmail , id).then(data=>{
         setMessage(data)
     })
-  },[email , id])
-  
+  },[userEmail , id])
+
 
   return (
- 
           <Card >
-            <Card.Header>From: {message.sender}</Card.Header>
+            <Card.Header>Sent to: {message.receiver}</Card.Header>
             <Card.Body>
               <Card.Title> <h2>{message.subject}</h2></Card.Title>
               <Card.Text>{message.body}</Card.Text>
@@ -49,4 +47,4 @@ function ViewMessage() {
   );
 }
 
-export default ViewMessage ;
+export default SentMessages ;
