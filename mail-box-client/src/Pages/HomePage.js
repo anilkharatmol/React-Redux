@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Editor } from "react-draft-wysiwyg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { EditorState } from "draft-js";
 import { convertToRaw } from "draft-js";
 import { NavLink } from "react-router-dom";
@@ -26,18 +26,15 @@ export default function HomePage(){
 }
 
 
+const userEmail=useSelector(state=>state.auth.email);
   async  function submitHandler(event){
         event.preventDefault();
 
         const receiverEmail=emailRef.current.value;
         const enteredSubject=subjectRef.current.value;
 
-        dispatch(authActions.setReceiverEmail(receiverEmail));
-
         const mailBody =  convertToRaw(editorState.getCurrentContent()).blocks[0].text;
-
-        const userEmail=localStorage.getItem('email');
-
+        
         const sender=userEmail.replace(/[@.]/g,'');
 
         const receiver=receiverEmail.replace(/[@.]/g,'');

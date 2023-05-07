@@ -1,4 +1,4 @@
-import { Button, Card, Container, Image, ListGroup } from "react-bootstrap";
+import { Badge, Button, Card, Container, Image, ListGroup } from "react-bootstrap";
 import {  useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -13,11 +13,12 @@ async function getMails(email) {
   console.log(emailID);
 
   try {
-    const userEmail = localStorage.getItem("email");
+    // const userEmail = localStorage.getItem("email");
 
-    if (userEmail !== email) {
-      return;
-    }
+    // if (userEmail !== email) {
+    //   return;
+    // }
+
     const response = await fetch(
       `https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${emailID}/receivedmails.json`
     );
@@ -45,15 +46,19 @@ async function deleteMail(receiver,id){
 const Inbox = () => {
   const history=useHistory();
   const dispatch=useDispatch();
-  const receiver = useSelector((state) => state.auth.receiverEmailId);
+  const receiver = useSelector(state=>state.auth.email);
   const [recievedMailsList, setRecievedMailsList] = useState({});
 
 
 
   useEffect(() => {
-    getMails(receiver).then((data) => {
-      setRecievedMailsList(data);
-    });
+   const i= setInterval(()=>{
+      getMails(receiver).then((data) => {
+        setRecievedMailsList(data);
+      });
+    },2000)
+    return()=>clearInterval(i)
+   
   }, [receiver]);
 
 
@@ -66,7 +71,7 @@ const Inbox = () => {
 };
  
 
-  
+let count=0;  
   
   const Emails = [];
   for (let key in recievedMailsList) {
@@ -75,6 +80,7 @@ const Inbox = () => {
     const receivedFrom = recievedMailsList[key].sender;
     const read=recievedMailsList[key].read;
 
+    if(!read){count++}
 
     Emails.push(
       <ListGroup key={id} id={id}>
@@ -88,6 +94,8 @@ const Inbox = () => {
       </ListGroup>
     );
   }
+
+ 
  
 
 
@@ -96,7 +104,7 @@ const Inbox = () => {
     <Button   variant="info"><NavLink to='/homepage'>Compose</NavLink></Button>
       <Container>
         <Card style={{ padding: "40px", margin: "40px" }}>
-            <Card.Title> My Inbox</Card.Title>
+            <Card.Title> My Inbox <Badge>{count}</Badge></Card.Title>
           <Card.Body>{Emails}</Card.Body>
         </Card>
       </Container>
@@ -105,3 +113,8 @@ const Inbox = () => {
 };
 
 export default Inbox;
+
+
+
+
+

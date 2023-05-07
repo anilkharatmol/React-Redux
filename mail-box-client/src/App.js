@@ -5,7 +5,7 @@ import HomePage from "./Pages/HomePage";
 import { useSelector } from "react-redux";
 import Inbox from "./Pages/Inbox";
 import ForgotPassword from "./Components/ForgotPassword";
-import ViewMessage from "./Pages/ViewMessage";
+import InboxMessages from "./Pages/InboxMessages";
 import Sent from "./Pages/Sent";
 import SentMessages from "./Pages/SentMessages";
 
@@ -40,7 +40,7 @@ function App() {
       <ForgotPassword/>
       </Route>
       <Route path="/:id">
-        {showInbox && <ViewMessage/>}
+        {showInbox && <InboxMessages/>}
         {showSent &&<SentMessages/>}
       </Route>
       </Switch>

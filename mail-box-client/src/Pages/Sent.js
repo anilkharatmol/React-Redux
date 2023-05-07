@@ -1,10 +1,11 @@
-import { Button, Card, Container, Image, ListGroup } from "react-bootstrap";
+import {  Button, Card, Container, Image, ListGroup } from "react-bootstrap";
 import {  useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { authActions } from "../Store/AuthSlice";
+import { useSelector } from "react-redux";
 
 
 async function getMails(email) {
@@ -41,16 +42,19 @@ async function deleteMail(sender,id){
 const Sent = () => {
   const dispatch=useDispatch();  
   const history=useHistory();
-  const userEmail = localStorage.getItem("email");
+  const userEmail =  useSelector(state=>state.auth.email);
 
   const [sentMailsList, setSentMailsList] = useState({});
 
 
 
   useEffect(() => {
-    getMails(userEmail).then((data) => {
-      setSentMailsList(data);
-    });
+   const i= setInterval(()=>{
+      getMails(userEmail).then((data) => {
+        setSentMailsList(data);
+      });
+    },2000)
+    return()=>clearInterval(i)
   }, [userEmail]);
 
 

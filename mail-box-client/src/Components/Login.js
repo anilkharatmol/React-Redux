@@ -45,6 +45,8 @@ export default function Login(){
                
               }
             }).then((data)=>{ dispatch(authActions.login( data.idToken))
+              
+              dispatch(authActions.setEmail(data.email));
                console.log(`User has successfully loggen in`)
             history.replace('/homepage')
          ;}).catch(err=>{alert(err.message)})

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialAuthState={
     token:localStorage.getItem('token'),
     isLoggedIn:!!localStorage.getItem('token'),
-    receiverEmailId:'',
+    email:'',
     showInbox:false,
     showSent:false
 }
@@ -21,10 +21,11 @@ const authSlice=createSlice({
         logout(state){state.isLoggedIn=false
         state.token=null;
         localStorage.removeItem('token')
-        localStorage.removeItem('email')},
+        localStorage.removeItem('email')
+        state.email=null;},
 
-        setReceiverEmail(state,action){const e=action.payload
-        state.receiverEmailId=e;},
+        setEmail(state,action){const e=action.payload
+        state.email=e;},
 
         Inbox(state){state.showInbox=true
         state.showSent=false},

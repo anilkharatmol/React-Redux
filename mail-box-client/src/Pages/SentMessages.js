@@ -1,6 +1,7 @@
 import { Card } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useState , useEffect } from 'react';
+import { useSelector } from 'react-redux';
 async function getMessage(email , id){
     let sender = email ;
     sender = sender.replace(/[.@]/g, "")
@@ -25,7 +26,7 @@ async function getMessage(email , id){
 function SentMessages() {
 
   const [message , setMessage] = useState({})
-  const userEmail = localStorage.getItem("email");
+  const userEmail = useSelector(state=>state.auth.email);
   const param = useParams()
   const id = param.id ;
   useEffect(()=>{
