@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Editor } from "react-draft-wysiwyg";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { EditorState } from "draft-js";
 import { convertToRaw } from "draft-js";
 import { NavLink } from "react-router-dom";
@@ -18,15 +17,30 @@ export default function HomePage(){
 
     async function sendMail(senderEmail, receiverEmail , sentData , receivedData){
 
-            const responseToSender =  await axios.post(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${senderEmail}/sentmails.json`,sentData);
+            const responseToSender =  await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${senderEmail}/sentmails.json`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(sentData)
+            });
             
-            await axios.post(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${receiverEmail}/receivedmails.json`,receivedData);
+            await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${receiverEmail}/receivedmails.json`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(receivedData)
+            });
+
+
+            const data= await responseToSender.json();
           
-            console.log(responseToSender,'mail sent suucessfully');    
+            console.log(data,'mail sent suucessfully');    
 }
 
 
-const userEmail=useSelector(state=>state.auth.email);
+const userEmail=localStorage.getItem('email');
   async  function submitHandler(event){
         event.preventDefault();
 

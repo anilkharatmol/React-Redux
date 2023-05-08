@@ -1,40 +1,35 @@
 import { Badge, Button, Card, Container, Image, ListGroup } from "react-bootstrap";
-import {  useDispatch, useSelector } from "react-redux";
+import {  useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { authActions } from "../Store/AuthSlice";
+import useFetch from "../Hooks/useFetch";
 
-async function getMails(email) {
+// async function getMails(email) {
 
-  let emailID = email;
-  emailID = emailID.replace(/[.@]/g, "");
-  console.log(emailID);
+//   let emailID = email;
+//   emailID = emailID.replace(/[.@]/g, "");
+//   console.log(emailID);
 
-  try {
-    // const userEmail = localStorage.getItem("email");
-
-    // if (userEmail !== email) {
-    //   return;
-    // }
-
-    const response = await fetch(
-      `https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${emailID}/receivedmails.json`
-    );
-    const data = await response.json();
-    console.log(data);
-    if (!response.ok) {
-      throw new Error(data.error);
-    }
-    return data;
-  } catch (error) {
-    alert(error);
-  }
-}
+//   try {
+//     const response = await fetch(
+//       `https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${emailID}/receivedmails.json`
+//     );
+//     const data = await response.json();
+//     console.log(data);
+//     if (!response.ok) {
+//       throw new Error(data.error);
+//     }
+//     return data;
+//   } catch (error) {
+//     alert(error);
+//   }
+// }
 
 async function deleteMail(receiver,id){
-  await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${receiver.replace(/[.@]/g,"")}/receivedmails/${id}.json`,{
+  await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${receiver}/receivedmails/${id}.json`,{
     method:'DELETE'
   })
 
@@ -45,40 +40,46 @@ async function deleteMail(receiver,id){
 
 const Inbox = () => {
   const history=useHistory();
-  const dispatch=useDispatch();
-  const receiver = useSelector(state=>state.auth.email);
-  const [recievedMailsList, setRecievedMailsList] = useState({});
+  const dispatch=useDispatch(); 
+  const receiver =localStorage.getItem('email');
+  // const [receivedMailsList, setReceivedMailsList] = useState({});
 
 
 
-  useEffect(() => {
-   const i= setInterval(()=>{
-      getMails(receiver).then((data) => {
-        setRecievedMailsList(data);
-      });
-    },2000)
-    return()=>clearInterval(i)
+  // useEffect(() => {
+  //  const i= setInterval(()=>{
+  //     getMails(receiver).then((data) => {
+  //       setRecievedMailsList(data);
+  //     });
+  //   },2000)
+  //   return()=>clearInterval(i)
    
-  }, [receiver]);
+  // }, [receiver]);
+
+ let emailID = receiver.replace(/[.@]/g, "");
+
+ 
+
+const [data]=useFetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${emailID}/receivedmails.json`);
+  
+  console.log(data);
 
 
  const deleteEmailHandler = async(id) => {
-  await deleteMail(receiver, id);
- setRecievedMailsList(prev => {
-   delete prev[id] ;
-   return {...prev}
- });
-};
+  await deleteMail(emailID, id);
+   delete data[id] ;
+   return {...data}
+}
  
 
 let count=0;  
   
   const Emails = [];
-  for (let key in recievedMailsList) {
+  for (let key in data) {
     const id = key;
-    const subject = recievedMailsList[key].subject;
-    const receivedFrom = recievedMailsList[key].sender;
-    const read=recievedMailsList[key].read;
+    const subject = data[key].subject;
+    const receivedFrom = data[key].sender;
+    const read=data[key].read;
 
     if(!read){count++}
 

@@ -28,7 +28,7 @@ async function getData(email , id){
 function InboxMessages() {
 
   const [data , setData] = useState({})
-  const email = useSelector(state=>state.auth.email);
+  const email = localStorage.getItem('email');
   const param = useParams()
   const id = param.id ;
   useEffect(()=>{

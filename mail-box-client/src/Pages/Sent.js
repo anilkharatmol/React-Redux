@@ -5,29 +5,29 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { authActions } from "../Store/AuthSlice";
-import { useSelector } from "react-redux";
+import useFetch from "../Hooks/useFetch";
 
 
-async function getMails(email) {
+// async function getMails(email) {
 
-  let emailID = email;
-  emailID = emailID.replace(/[.@]/g, "");
-  console.log(emailID);
+//   let emailID = email;
+//   emailID = emailID.replace(/[.@]/g, "");
+//   console.log(emailID);
 
-  try {
-    const response = await fetch(
-      `https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${emailID}/sentmails.json`
-    );
-    const data = await response.json();
-    console.log(data);
-    if (!response.ok) {
-      throw new Error(data.error);
-    }
-    return data;
-  } catch (error) {
-    alert(error);
-  }
-}
+//   try {
+//     const response = await fetch(
+//       `https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${emailID}/sentmails.json`
+//     );
+//     const data = await response.json();
+//     console.log(data);
+//     if (!response.ok) {
+//       throw new Error(data.error);
+//     }
+//     return data;
+//   } catch (error) {
+//     alert(error);
+//   }
+// }
 
 async function deleteMail(sender,id){
   await fetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${sender.replace(/[.@]/g,"")}/sentmails/${id}.json`,{
@@ -42,38 +42,44 @@ async function deleteMail(sender,id){
 const Sent = () => {
   const dispatch=useDispatch();  
   const history=useHistory();
-  const userEmail =  useSelector(state=>state.auth.email);
+  const userEmail = localStorage.getItem('email');
 
-  const [sentMailsList, setSentMailsList] = useState({});
+  // const [sentMailsList, setSentMailsList] = useState({});
 
 
 
-  useEffect(() => {
-   const i= setInterval(()=>{
-      getMails(userEmail).then((data) => {
-        setSentMailsList(data);
-      });
-    },2000)
-    return()=>clearInterval(i)
-  }, [userEmail]);
+  // useEffect(() => {
+  //  const i= setInterval(()=>{
+  //     getMails(userEmail).then((data) => {
+  //       setSentMailsList(data);
+  //     });
+  //   },2000)
+  //   return()=>clearInterval(i)
+  // }, [userEmail]);
+
+
+  let emailID = userEmail.replace(/[.@]/g, "");
+  
+const [data]=useFetch(`https://mailbox-client-30171-default-rtdb.firebaseio.com/mailbox/${emailID}/sentmails.json`);
+  
+  console.log(data);
 
 
  const deleteEmailHandler = async(id) => {
-    await deleteMail(userEmail, id);
-   setSentMailsList(prev => {
-     delete prev[id] ;
-     return {...prev}
-   });
-  };
+  await deleteMail(emailID, id);
+
+   delete data[id] ;
+   return {...data}
+}
 
   
   
   const Emails = [];
-  for (let key in sentMailsList) {
+  for (let key in data) {
     const id = key;
-    const subject = sentMailsList[key].subject;
-    const sentTo = sentMailsList[key].receiver;
-    const read=sentMailsList[key].read;
+    const subject = data[key].subject;
+    const sentTo = data[key].receiver;
+    const read=data[key].read;
 
 
     Emails.push(
